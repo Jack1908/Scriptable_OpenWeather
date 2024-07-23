@@ -1,0 +1,29 @@
+let apiKey = "YOUR_API_KEY";
+let city = "Shanghai";
+let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+let req = new Request(url);
+let res = await req.loadJSON();
+
+let widget = new ListWidget();
+widget.backgroundColor = new Color("#1c1c1c");
+
+let temp = res.main.temp;
+let desc = res.weather[0].description;
+
+let tempTxt = widget.addText(`${temp}°C`);
+tempTxt.textColor = Color.white();
+tempTxt.font = Font.boldSystemFont(36);
+
+widget.addSpacer(8);
+
+let descTxt = widget.addText(desc);
+descTxt.textColor = Color.white();
+descTxt.font = Font.regularSystemFont(18);
+
+if (config.runsInWidget) {
+  Script.setWidget(widget);
+} else {
+  widget.presentSmall();
+}
+Script.complete();
